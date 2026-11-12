@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.db.models import Q, F
+from django.core.validators import FileExtensionValidator
 from apps.core.models import TimeStampedModel
 # Create your models here.
 
@@ -9,13 +11,22 @@ class User(AbstractUser, TimeStampedModel):
     email = models.EmailField(unique=True, db_index=True)
     bio = models.CharField(max_length=160, blank=True, default="")
     avatar = models.ImageField(
-        upload_to="",
-        
+        upload_to="avatars/",
         null=True,
         blank=True,
-        validators=["jpeg", "gif", "png", "jpg"]
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    "jpeg",
+                    "jpg",
+                    "gif",
+                    "png",
+                ]
+            )
+        ]
     )
     following = models.ManyToManyField(
+        to="self",
         through="Follow",
         symmetrical=False,
         related_name="followers",
@@ -82,7 +93,7 @@ class Follow(TimeStampedModel):
                 name="unique_user_follow",
             ),
             models.CheckConstraint(
-                check=~Q(follower=F("following")),
+                condition=~Q(follower=F("following")),
                 name="prevent_self_follow",
             ),
         ]
