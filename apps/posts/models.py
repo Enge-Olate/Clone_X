@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from apps.core.models import TimeStampedModel
-from django.core.validators import FileExtensionValidator
+from apps.core.validators import validate_image_size_and_extension
 # Create your models here.
 
 class Post(TimeStampedModel):
@@ -20,14 +20,7 @@ class Post(TimeStampedModel):
         blank=True,
         null=True,
         validators=[
-            FileExtensionValidator(
-                [
-                    "jpeg",
-                    "jpg",
-                    "png",
-                    "gif"
-                ]
-            )
+            validate_image_size_and_extension
         ]
     )
     

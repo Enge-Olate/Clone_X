@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q, F
 from django.core.validators import FileExtensionValidator
 from apps.core.models import TimeStampedModel
+from apps.core.validators import validate_image_size_and_extension
 # Create your models here.
 
 class User(AbstractUser, TimeStampedModel):
@@ -15,14 +16,7 @@ class User(AbstractUser, TimeStampedModel):
         null=True,
         blank=True,
         validators=[
-            FileExtensionValidator(
-                allowed_extensions=[
-                    "jpeg",
-                    "jpg",
-                    "gif",
-                    "png",
-                ]
-            )
+            validate_image_size_and_extension
         ]
     )
     following = models.ManyToManyField(
