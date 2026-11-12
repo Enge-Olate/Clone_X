@@ -40,10 +40,7 @@ class Post(TimeStampedModel):
         return f"@{self.author.username}: {self.content[:40]}"
 
     def toggle_like(self, user) -> tuple[bool, int]:
-        """
-        Alterna a curtida de um usuário na postagem.
-        Retorna `(liked: bool, total_likes: int)`.
-        """
+        
         existing = self.likes.filter(user=user).first()
         if existing:
             existing.delete()
@@ -68,15 +65,15 @@ class Like(TimeStampedModel):
     class Meta:
         verbose_name = "Curtida"
         verbose_name_plural = "Curtidas"
-        constrains = [
+        constraints = [
             models.UniqueConstraint(
                 fields=["user", "post"],
                 name="unique_post_like_per_user"
             )
         ]
         
-    def __str__(self):
-        return f"@{self.user.username} curtiy {self.post_id}"
+    def __str__(self) -> str:
+        return f"@{self.user.username} curtiu {self.post_id}"
     
 class Comment(TimeStampedModel):
     post = models.ForeignKey(
