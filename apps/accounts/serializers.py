@@ -43,7 +43,7 @@ class UserPublicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = (
+        fields = [
             "id",
             "username",
             "bio",
@@ -52,7 +52,7 @@ class UserPublicSerializer(serializers.ModelSerializer):
             "following_count",
             "is_following",
             "created_at",
-        )
+        ]
 
     def get_is_following(self, obj: User) -> bool:
         request = self.context.get("request")
@@ -70,13 +70,13 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = (
+        fields = [
             "display_name",
             "bio",
             "avatar",
             "current_password",
             "new_password",
-        )
+        ]
 
     def validate(self, attrs: dict) -> dict:
         new_password = attrs.get("new_password")
