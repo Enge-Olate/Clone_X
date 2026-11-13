@@ -20,6 +20,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields =  [
             "id",
             "username",
+            "display_name",
             "email",
             "bio",
             "avatar",
@@ -27,14 +28,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             "password_confirm",
         ]
     def validate(self, attrs: dict) -> dict:
-        if attrs["password"] != attrs.pop("passoword_confirm"):
-            raise serializers.ValidationsError({
+        if attrs["password"] != attrs.pop("password_confirm"):
+            raise serializers.ValidationError({
                 "password_confirm": "As senhas informadas não coincidem."
             })
         return attrs
     
-    def create(self, validate_data: dict) -> User:
-        return User.objects.create_user(**validate_data)
+    def create(self, validated_data: dict) -> User:
+        return User.objects.create_user(**validated_data)
 
 class UserPublicSerializer(serializers.ModelSerializer):
     followers_count = serializers.IntegerField(read_only=True)
@@ -46,6 +47,7 @@ class UserPublicSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "username",
+            "display_name",
             "bio",
             "avatar",
             "followers_count",
@@ -94,7 +96,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
             validate_password(new_password, self.instance)
         return attrs
 
-    def update(self, instance: User, validated_data: dict) -> CustomUser:
+    def update(self, instance: User, validated_data: dict) -> User:
         validated_data.pop("current_password", None)
         new_password = validated_data.pop("new_password", None)
 

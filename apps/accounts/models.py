@@ -9,6 +9,7 @@ from apps.core.validators import validate_image_size_and_extension
 
 class User(AbstractUser, TimeStampedModel):
     username = models.CharField(unique=True, max_length=80)
+    display_name = models.CharField("Nome de Exibição", max_length=80)
     email = models.EmailField(unique=True, db_index=True)
     bio = models.CharField(max_length=160, blank=True, default="")
     avatar = models.ImageField(
@@ -37,23 +38,24 @@ class User(AbstractUser, TimeStampedModel):
     def follow(self, target_user: "User") -> tuple["Follow", bool]:
         if self == target_user:
             raise ValidationError("Um usuário não pode seguir a si mesmo.")
-        return Follow.objects.filter(
-            following = target_user
+        return Follow.objects.get_or_create(
+            follower=self,
+            following=target_user,
         )
     
     def unfollow(self, target_user: "User") -> int:
-        deleted_count, _ =Follow.objects.filter(
-            followers = self,
-            following = target_user
+        deleted_count, _ = Follow.objects.filter(
+            follower=self,
+            following=target_user,
         ).delete()
         return deleted_count
     
-    def is_following(self, taret_user: "User")-> bool:
+    def is_following(self, target_user: "User") -> bool:
         if not self.is_authenticated:
             return False
         return Follow.objects.filter(
-            followers = self,
-            following = taret_user
+            follower=self,
+            following=target_user,
         ).exists()
     
     @property
