@@ -2,18 +2,18 @@ from rest_framework import serializers
 from apps.accounts.serializers import UserPublicSerializer
 from .models import Comment, Post
 
-class CommentSerializer(serializers.ModelSerilizer):
+class CommentSerializer(serializers.ModelSerializer):
     author = UserPublicSerializer(read_only=True)
     class Meta:
         model = Comment
-        fields = (
+        fields = [
             "id",
             "post",
             "author",
             "content",
             "created_at"
-        )
-        read_only_posts = ("id", "post", "author", "created_at")
+        ]
+        read_only_fields = ["id", "post", "author", "created_at"]
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserPublicSerializer(read_only=True)

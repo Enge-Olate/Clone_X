@@ -21,8 +21,10 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from apps.accounts.views import UserViewSet
+from apps.posts.views import PostViewSet
 router = DefaultRouter()
 router.register(r"users", UserViewSet, basename="user")
+router.register(r"posts", PostViewSet, basename="post")
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Endpoints da API REST.

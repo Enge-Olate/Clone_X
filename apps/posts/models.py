@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from apps.core.models import TimeStampedModel
 from apps.core.validators import validate_image_size_and_extension
+from .querysets import PostQuerySet
 # Create your models here.
 
 class Post(TimeStampedModel):
@@ -24,7 +25,7 @@ class Post(TimeStampedModel):
         ]
     )
     
-    
+    objects = PostQuerySet.as_manager()
     class Meta:
         verbose_name = "Postagem"
         verbose_name_plural = "Postagens"

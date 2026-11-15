@@ -10,7 +10,6 @@ from .models import User, Follow
 
 
 class AccountsBackendTestCase(APITestCase):
-    """Suíte de testes orientados a objetos para autenticação, perfil e relacionamentos."""
 
     def setUp(self):
         self.alice = User.objects.create_user(
@@ -27,7 +26,6 @@ class AccountsBackendTestCase(APITestCase):
         )
 
     def test_user_registration_and_login(self):
-        """Garante que novos usuários possam se cadastrar e efetuar login com segurança."""
         reg_url = reverse("api_register")
         payload = {
             "username": "charlie",
@@ -49,7 +47,6 @@ class AccountsBackendTestCase(APITestCase):
         self.assertEqual(login_res.status_code, status.HTTP_200_OK)
 
     def test_session_logout(self):
-        """Garante que o endpoint de logout encerre a sessão autenticada."""
         self.client.force_login(self.alice)
 
         response = self.client.post(reverse("api_logout"), format="json")
@@ -58,12 +55,6 @@ class AccountsBackendTestCase(APITestCase):
         self.assertNotIn("_auth_user_id", self.client.session)
 
     def test_optional_profile_updates_independently(self):
-        """
-        Verifica que nenhuma alteração de perfil é obrigatória:
-        1) Alterar apenas o nome;
-        2) Alterar apenas a foto de perfil;
-        3) Alterar apenas a senha.
-        """
         self.client.force_authenticate(user=self.alice)
         me_url = "/api/v1/users/me/"
 
@@ -94,7 +85,6 @@ class AccountsBackendTestCase(APITestCase):
         self.assertTrue(self.alice.check_password("NewStrongPassword456!"))
 
     def test_follow_unfollow_and_prevent_self_follow(self):
-        """Testa seguir, deixar de seguir, impedimento de auto-follow e listas de seguidores/seguindo."""
         self.client.force_authenticate(user=self.alice)
 
         # Impede auto-follow no modelo e na API

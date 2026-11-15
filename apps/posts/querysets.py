@@ -14,7 +14,7 @@ class PostQuerySet(models.QuerySet):
         return qs
     
     def following_feed_for(self, user):
-        if not user or not user.is_athenticated:
+        if not user or not user.is_authenticated:
             return self.none()
         return (
             self.filter(author__followers_relations__follower = user)
