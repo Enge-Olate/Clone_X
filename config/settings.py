@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.core',
     'apps.posts',
+    'apps.web'
 ]
 
 MIDDLEWARE = [
