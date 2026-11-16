@@ -23,7 +23,7 @@ class HomeFeedview(LoginRequiredMixin, TemplateView):
         context["feed_posts"] = Post.objects.following_feed_for(user)[:50]
         context["suggested_users"] = (
             User.objects.exclude(id=user.id)
-            .exclude(followers_relations_follower=user)[:5]
+            .exclude(followers_relations__follower=user)[:5]
         )
         return context
 
@@ -40,18 +40,18 @@ class UserProfileViw(LoginRequiredMixin, DetailView):
         profile_user = self.get_object()
         viewer = self.request.user
         context["user_posts"]=(
-            Post.objects.filter(author=profile_user).interaction_metrics(viewer).order_by("-created_at")
+            Post.objects.filter(author=profile_user).interactions_metrics(viewer).order_by("-created_at")
         )
         context["followers_list"] = User.objects.filter(
-            following_relations_following= profile_user
+            followers_relations__following=profile_user
         )
         context["following_list"] = User.objects.filter(
-                    followers_relations_follower= profile_user
+            following_relations__follower=profile_user
         )
         context["is_following_profile"] = viewer.is_following(profile_user)
-        context["suggested_user"] =(
+        context["suggested_users"] =(
             User.objects.exclude(
                 id=viewer.id
-            ).exclude(followers_relations_follower=viewer)[:5]
+            ).exclude(followers_relations__follower=viewer)[:5]
         )
         return context

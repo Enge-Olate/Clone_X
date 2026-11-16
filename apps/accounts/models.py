@@ -33,7 +33,7 @@ class User(AbstractUser, TimeStampedModel):
         ordering = ["-created_at"]
 
     def __str__(self)-> str:
-        return super().__str__(self.username)
+        return f"{self.username}"
     
     def follow(self, target_user: "User") -> tuple["Follow", bool]:
         if self == target_user:
