@@ -17,7 +17,7 @@
             <!-- Abas Entrar / Criar Conta -->
             <ul class="nav nav-pills mb-3 gap-2" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#loginPane" type="button">Entrar</button>
+                    <button  class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#loginPane" type="button">Entrar</button>
                 </li>
                 <li class="nav-item">
                     <button class="nav-link rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#registerPane" type="button">Criar conta</button>
@@ -27,7 +27,7 @@
             <div class="tab-content x-side-card p-4 rounded-4 border border-secondary border-opacity-25">
                 <!-- Formulário de Login -->
                 <div class="tab-pane fade show active" id="loginPane">
-                    <form id="loginForm">
+                    <form id="loginForm" >
                         {% csrf_token %}
                         <div class="mb-3">
                             <label class="form-label small text-secondary">Usuário (@handle)</label>

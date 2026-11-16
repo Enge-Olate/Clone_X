@@ -59,7 +59,7 @@
                         <li><a class="dropdown-item py-2" href="{% url 'web_profile' user.username %}"><i class="bi bi-person me-2"></i>Meu Perfil</a></li>
                         <li><button class="dropdown-item py-2" data-bs-toggle="modal" data-bs-target="#editProfileModal"><i class="bi bi-sliders me-2"></i>Editar foto, nome ou senha</button></li>
                         <li><hr class="dropdown-divider border-secondary border-opacity-25"></li>
-                        <li><button class="dropdown-item py-2 text-danger fw-semibold" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Sair de @{{ user.username }}</button></li>
+                        <li><button type="button" class="dropdown-item py-2 text-danger fw-semibold" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Sair de @{{ user.username }}</button></li>
                     </ul>
                 </div>
             </header>

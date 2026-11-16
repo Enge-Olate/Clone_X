@@ -1,7 +1,10 @@
 
 class XCloneApiClient {
     constructor() {
-        this.csrfToken = this.getCookie("csrftoken");
+        this.csrfToken =
+            this.getCookie("csrftoken") ||
+            document.querySelector("[name='csrfmiddlewaretoken']")?.value ||
+            "";
         this.bindEvents();
     }
 
@@ -27,6 +30,45 @@ class XCloneApiClient {
     }
 
     bindEvents() {
+
+        // Login
+        const loginForm = document.getElementById("loginForm");
+        if(loginForm){
+            loginForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const formData = new FormData(loginForm);
+                try {
+                    await this.request("/api/v1/auth/login/",{
+                        method: "POST",
+                        body: JSON.stringify({
+                            username: formData.get("username"),
+                            password: formData.get("password"),
+                        }),
+                    });
+                    window.location.assign("/");
+                } catch (error) {
+                    window.alert(
+                        error.detail || "Não foi possível entrar. Verifique suas credenciais!"
+                    );
+                }
+            });
+        }
+
+        // Logout
+        const sair = document.getElementById("logoutBtn");
+        if(sair){
+            console.log("olá");
+            sair.addEventListener("click", async () => {
+                try {
+                    await this.request("/api/v1/auth/logout/", { method: "POST" });
+                    window.location.assign("/login/");
+                } catch (error) {
+                    console.error("Falha ao encerrar sessão:", error);
+                    window.alert("Não foi possível sair. Tente novamente.");
+                }
+            });
+        }
+
         // Criação de postagem
         const postForm = document.getElementById("createPostForm");
         if (postForm) {
