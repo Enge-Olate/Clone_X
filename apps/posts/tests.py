@@ -17,11 +17,22 @@ class PostAndFeedBackendTestCase(APITestCase):
             email="bob@gmail.com",
             display_name = "bob",
             password="bobonco1234",
-        )    
+        )
+        
+        self.stranger = User.objects.create_user(
+            username="stranger",
+            email="stranger@example.com",
+            display_name="Stranger (Não Seguido)",
+            password="StrongPassword123!",
+        )
         self.porcupine.follow(self.bob)
         self.bob_post = Post.objects.create(
             author = self.bob,
             content = "Postagem do onco Bob."
+        )
+        self.stranger_post = Post.objects.create(
+            author = self.stranger, 
+            content="Postagem de quem porcupine não segue."
         )
     def test_feed_display_only_followed_user_posts(self):
         self.client.force_authenticate(user=self.porcupine)
@@ -31,6 +42,9 @@ class PostAndFeedBackendTestCase(APITestCase):
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]["id"], self.bob_post.id)
         self.assertEqual(results[0]["author"]["username"], "bob")
+        post_ids = [post["id"] for post in response.data["results"]]
+        self.assertIn(self.bob_post.id, post_ids)
+        self.assertNotIn(self.stranger_post.id, post_ids)
         
     def test_like_and_comment_interactions(self):
         self.client.force_authenticate(user=self.porcupine)
