@@ -1,0 +1,48 @@
+<!-- Modal de Configuração Opcional de Perfil -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-black text-white border border-secondary border-opacity-50 rounded-4">
+            <form id="editProfileForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header border-bottom border-secondary border-opacity-25">
+                    <h5 class="modal-title fw-bold" id="editProfileModalLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-secondary small mb-3">
+                        Altere livremente apenas os campos que desejar (foto de perfil, nome, bio ou senha). Nenhuma alteração é obrigatória.
+                    </p>
+                    <div id="profileUpdateAlert" class="alert d-none small py-2"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary">Foto de Perfil (Opcional)</label>
+                        <input type="file" name="avatar" accept="image/*" class="form-control bg-dark text-white border-secondary border-opacity-50">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary">Nome de Exibição (Opcional)</label>
+                        <input type="text" name="display_name" value="{{ user.display_name }}" class="form-control bg-dark text-white border-secondary border-opacity-50" placeholder="Seu nome no X">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-secondary">Biografia (Opcional)</label>
+                        <textarea name="bio" rows="2" maxlength="160" class="form-control bg-dark text-white border-secondary border-opacity-50">{{ user.bio }}</textarea>
+                    </div>
+
+                    <hr class="border-secondary border-opacity-25">
+                    <div class="small fw-bold mb-2 text-info">Alteração de Senha (Opcional)</div>
+                    <div class="mb-2">
+                        <input type="password" name="current_password" class="form-control form-control-sm bg-dark text-white border-secondary border-opacity-50" placeholder="Senha atual (apenas se for trocar a senha)">
+                    </div>
+                    <div class="mb-1">
+                        <input type="password" name="new_password" class="form-control form-control-sm bg-dark text-white border-secondary border-opacity-50" placeholder="Nova senha (mín. 8 caracteres)">
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-secondary border-opacity-25">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-light rounded-pill px-4 fw-bold">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Entrar no X / X Clone{% endblock %}
+
+{% block auth_content %}
+<div class="container min-vh-100 d-flex align-items-center justify-content-center py-5">
+    <div class="row w-100 align-items-center justify-content-center g-5">
+        <div class="col-lg-5 text-center">
+            <i class="bi bi-twitter-x display-1 text-white" style="font-size: 9rem;"></i>
+        </div>
+        <div class="col-lg-5">
+            <h1 class="display-5 fw-bolder mb-4">Acontecendo agora</h1>
+            <h2 class="h4 fw-bold mb-3">Inscreva-se hoje</h2>
+
+            <div id="authAlert" class="alert d-none small"></div>
+
+            <!-- Abas Entrar / Criar Conta -->
+            <ul class="nav nav-pills mb-3 gap-2" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#loginPane" type="button">Entrar</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#registerPane" type="button">Criar conta</button>
+                </li>
+            </ul>
+
+            <div class="tab-content x-side-card p-4 rounded-4 border border-secondary border-opacity-25">
+                <!-- Formulário de Login -->
+                <div class="tab-pane fade show active" id="loginPane">
+                    <form id="loginForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label small text-secondary">Usuário (@handle)</label>
+                            <input type="text" name="username" class="form-control bg-black text-white border-secondary" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small text-secondary">Senha</label>
+                            <input type="password" name="password" class="form-control bg-black text-white border-secondary" required>
+                        </div>
+                        <button type="submit" class="btn btn-light w-100 rounded-pill fw-bold py-2">Avançar</button>
+                    </form>
+                </div>
+
+                <!-- Formulário de Cadastro -->
+                <div class="tab-pane fade" id="registerPane">
+                    <form id="registerForm">
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <label class="form-label small text-secondary">Nome de Exibição</label>
+                            <input type="text" name="display_name" class="form-control bg-black text-white border-secondary" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small text-secondary">@username</label>
+                            <input type="text" name="username" class="form-control bg-black text-white border-secondary" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small text-secondary">E-mail</label>
+                            <input type="email" name="email" class="form-control bg-black text-white border-secondary" required>
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label small text-secondary">Senha</label>
+                                <input type="password" name="password" class="form-control bg-black text-white border-secondary" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small text-secondary">Confirmar Senha</label>
+                                <input type="password" name="password_confirm" class="form-control bg-black text-white border-secondary" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary x-btn-post w-100 rounded-pill fw-bold py-2">Criar conta segura</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
