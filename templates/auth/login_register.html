@@ -13,22 +13,29 @@
             <h2 class="h4 fw-bold mb-3">Inscreva-se hoje</h2>
 
             <div id="authAlert" class="alert d-none small"></div>
+            {% if request.GET.registered == "1" %}
+            <div class="alert alert-success small">Conta criada com sucesso. Faça login para continuar.</div>
+            {% endif %}
 
             <!-- Abas Entrar / Criar Conta -->
             <ul class="nav nav-pills mb-3 gap-2" role="tablist">
                 <li class="nav-item">
-                    <button  class="nav-link active rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#loginPane" type="button">Entrar</button>
+                    <button class="nav-link {% if not show_register %}active{% endif %} rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#loginPane" type="button">Entrar</button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#registerPane" type="button">Criar conta</button>
+                    <button class="nav-link {% if show_register %}active{% endif %} rounded-pill px-4 fw-bold" data-bs-toggle="pill" data-bs-target="#registerPane" type="button">Criar conta</button>
                 </li>
             </ul>
 
             <div class="tab-content x-side-card p-4 rounded-4 border border-secondary border-opacity-25">
                 <!-- Formulário de Login -->
-                <div class="tab-pane fade show active" id="loginPane">
-                    <form id="loginForm" >
+                <div class="tab-pane fade {% if not show_register %}show active{% endif %}" id="loginPane">
+                    <form id="loginForm" method="post" action="{% url 'web_login' %}">
                         {% csrf_token %}
+                        <input type="hidden" name="auth_action" value="login">
+                        {% if login_error %}
+                        <div class="alert alert-danger small">{{ login_error }}</div>
+                        {% endif %}
                         <div class="mb-3">
                             <label class="form-label small text-secondary">Usuário (@handle)</label>
                             <input type="text" name="username" class="form-control bg-black text-white border-secondary" required>
@@ -42,9 +49,17 @@
                 </div>
 
                 <!-- Formulário de Cadastro -->
-                <div class="tab-pane fade" id="registerPane">
-                    <form id="registerForm">
+                <div class="tab-pane fade {% if show_register %}show active{% endif %}" id="registerPane">
+                    <form id="registerForm" method="post" action="{% url 'web_login' %}">
                         {% csrf_token %}
+                        <input type="hidden" name="auth_action" value="register">
+                        {% if registration_errors %}
+                        <div class="alert alert-danger small">
+                            {% for field, errors in registration_errors.items %}
+                                <div>{{ field }}: {{ errors|join:", " }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                         <div class="mb-2">
                             <label class="form-label small text-secondary">Nome de Exibição</label>
                             <input type="text" name="display_name" class="form-control bg-black text-white border-secondary" required>

@@ -54,6 +54,36 @@ class XCloneApiClient {
             });
         }
 
+        // Cadastro
+        const registerForm = document.getElementById("registerForm");
+        if (registerForm) {
+            registerForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const formData = new FormData(registerForm);
+                const authAlert = document.getElementById("authAlert");
+
+                try {
+                    await this.request("/api/v1/auth/register/", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            display_name: formData.get("display_name"),
+                            username: formData.get("username"),
+                            email: formData.get("email"),
+                            password: formData.get("password"),
+                            password_confirm: formData.get("password_confirm"),
+                        }),
+                    });
+                    window.location.assign("/login/?registered=1");
+                } catch (error) {
+                    const message = error.detail || Object.values(error).flat().join(" ");
+                    authAlert.textContent =
+                        message || "Não foi possível criar sua conta. Tente novamente.";
+                    authAlert.classList.remove("d-none", "alert-success");
+                    authAlert.classList.add("alert-danger");
+                }
+            });
+        }
+
         // Logout
         const sair = document.getElementById("logoutBtn");
         if(sair){

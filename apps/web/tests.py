@@ -37,6 +37,31 @@ class FrontendTemplateTest(TestCase):
         self.assertEqual(res.status_code, 302)
         self.assertIn("/login/", res.url)
 
+    def test_registration_form_post_creates_user_without_logging_them_in(self):
+        response = self.client.post(
+            reverse("web_login"),
+            {
+                "auth_action": "register",
+                "display_name": "Nova conta",
+                "username": "nova-conta",
+                "email": "nova@example.com",
+                "password": "SafePassword99!",
+                "password_confirm": "SafePassword99!",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            f"{reverse('web_login')}?registered=1",
+            fetch_redirect_response=False,
+        )
+        self.assertTrue(User.objects.filter(username="nova-conta").exists())
+        self.assertNotIn("_auth_user_id", self.client.session)
+        login_page = self.client.get(reverse("web_login") + "?registered=1")
+        self.assertEqual(login_page.status_code, 200)
+        self.assertContains(login_page, "Conta criada com sucesso")
+        self.assertEqual(self.client.get(reverse("web_feed")).status_code, 302)
+
     def test_home_feed_renders_only_followed_posts_and_bootstrap_5(self):
         self.client.login(username="porcupine", password="porcu1234565")
         res = self.client.get(reverse("web_feed"))

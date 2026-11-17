@@ -37,6 +37,8 @@ class AccountsBackendTestCase(APITestCase):
         response = self.client.post(reg_url, payload, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(User.objects.filter(username="charlie").exists())
+        self.assertNotIn("_auth_user_id", self.client.session)
+        self.assertEqual(self.client.get("/").status_code, status.HTTP_302_FOUND)
 
         login_url = reverse("api_login")
         login_res = self.client.post(
@@ -45,6 +47,10 @@ class AccountsBackendTestCase(APITestCase):
             format="json",
         )
         self.assertEqual(login_res.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            self.client.session["_auth_user_id"],
+            str(User.objects.get(username="charlie").pk),
+        )
 
     def test_session_logout(self):
         self.client.force_login(self.alice)

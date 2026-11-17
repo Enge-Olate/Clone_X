@@ -1,7 +1,10 @@
-from django.shortcuts import get_list_or_404, redirect
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, TemplateView
 from apps.accounts.models import User
+from apps.accounts.serializers import UserRegistrationSerializer
 from apps.posts.models import Post
 
 # Create your views here.
@@ -12,6 +15,35 @@ class AuthPageView(TemplateView):
         if request.user.is_authenticated:
             return redirect("web_feed")
         return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get("auth_action") == "register":
+            serializer = UserRegistrationSerializer(data=request.POST)
+            if serializer.is_valid():
+                serializer.save()
+                return redirect(f"{reverse('web_login')}?registered=1")
+
+            return self.render_to_response(
+                self.get_context_data(
+                    show_register=True,
+                    registration_errors=serializer.errors,
+                ),
+                status=400,
+            )
+
+        user = authenticate(
+            request,
+            username=request.POST.get("username", ""),
+            password=request.POST.get("password", ""),
+        )
+        if user is not None:
+            login(request, user)
+            return redirect("web_feed")
+
+        return self.render_to_response(
+            self.get_context_data(login_error="Usuário ou senha inválidos."),
+            status=400,
+        )
 
 class HomeFeedview(LoginRequiredMixin, TemplateView):
     template_name = "feed/index.html"
