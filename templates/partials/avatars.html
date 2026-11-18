@@ -1,0 +1,13 @@
+<a href="{% url 'web_profile' post.author.username %}" class="text-decoration-none">
+    <div
+        class="x-avatar-md rounded-circle bg-primary d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0">
+        {% if post.author.avatar %}
+        <img class="x-avatar-md rounded-circle object-fit-cover" src="{{ post.author.avatar.url }}" alt=""
+            onerror="this.classList.add('d-none'); this.nextElementSibling.classList.remove('d-none');">
+        {% endif %}
+        <span
+            class="x-avatar-md rounded-circle bg-primary d-flex align-items-center justify-content-center fw-bold text-white {% if post.author.avatar %}d-none{% endif %}">
+            {{ post.author.display_name|slice:":1"|upper }}
+        </span>
+    </div>
+</a>
