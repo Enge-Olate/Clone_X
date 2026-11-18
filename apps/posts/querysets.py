@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Count, Exists, OuterRef
+from django.db.models import Count, Exists, OuterRef, Q
 
 class PostQuerySet(models.QuerySet):
     def interactions_metrics(self, user=None):
@@ -16,7 +16,12 @@ class PostQuerySet(models.QuerySet):
     def following_feed_for(self, user):
         if not user or not user.is_authenticated:
             return self.none()
-        return (
-            self.filter(author__followers_relations__follower = user)
-            .interactions_metrics(user).order_by("-created_at")
+        # return (
+        #     self.filter(author__followers_relations__follower = user)
+        #     .interactions_metrics(user).order_by("-created_at")
+        # )
+        return(
+            self.filter(
+                Q(author=user)|Q(author__followers_relations__follower = user)
+            ).distinct().interactions_metrics(user).order_by("-created_at")
         )
