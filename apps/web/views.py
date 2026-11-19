@@ -59,7 +59,7 @@ class HomeFeedview(LoginRequiredMixin, TemplateView):
         )
         return context
 
-class UserProfileViw(LoginRequiredMixin, DetailView):
+class UserProfileView(LoginRequiredMixin, DetailView):
     model=User
     template_name = "profile/detail.html"
     context_object_name= "profile_user"
@@ -75,10 +75,10 @@ class UserProfileViw(LoginRequiredMixin, DetailView):
             Post.objects.filter(author=profile_user).interactions_metrics(viewer).order_by("-created_at")
         )
         context["followers_list"] = User.objects.filter(
-            followers_relations__following=profile_user
+            following_relations__following=profile_user
         )
         context["following_list"] = User.objects.filter(
-            following_relations__follower=profile_user
+            followers_relations__follower=profile_user
         )
         context["is_following_profile"] = viewer.is_following(profile_user)
         context["suggested_users"] =(
