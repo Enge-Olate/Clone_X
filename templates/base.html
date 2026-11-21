@@ -54,7 +54,7 @@
                 <!-- Card do Usuário Logado no Rodapé da Sidebar -->
                 <div class="dropdown my-2">
                     <button
-                        class="btn x-user-pill w-100 rounded-pill p-2 d-flex align-items-center justify-content-between text-white border-0"
+                        class="btn x-user-pill w-100 rounded-pill p-1 d-flex align-items-center justify-content-between text-white border-0"
                         data-bs-toggle="dropdown">
                         <div class="d-flex align-items-center gap-2 overflow-hidden">
                             {% if user.avatar %}
@@ -67,7 +67,7 @@
                                 </div>
                             {% endif %}
 
-                            <div class="text-start d-none d-xl-block text-truncate">
+                            <div class="text-start  d-xl-block text-truncate">
                                 <div class="fw-bold small text-truncate">{{ user.display_name }}</div>
                                 <div class="text-secondary small text-truncate">@{{ user.username }}</div>
                             </div>
