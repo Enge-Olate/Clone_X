@@ -20,7 +20,7 @@ env = environ.Env(
     DEBUG = (bool, False),
     ALLOWED_HOSTS=(
         list,
-        ['localhost', '127.0.0.1']
+        ['localhost', '127.0.0.1','192.168.0.108']
     ),
 )
 
@@ -74,6 +74,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -102,7 +103,7 @@ if DATABASE_URL:
         DATABASES['default'].setdefault('OPTIONS', {})
         DATABASES['default']['OPTIONS']['sslmode'] = 'require'
 else:
-    if not DEBUG:
+    if  not DEBUG:
         raise ImproperlyConfigured(
             'DATABASE_URL (PostgreSQL) é obrigtória quando DEBUG=False.'
         )
