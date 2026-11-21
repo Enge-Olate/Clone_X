@@ -42,6 +42,12 @@
                             <i class="bi bi-gear-fill fs-4"></i>
                             <span class="d-none d-xl-inline fs-5">Configurações de Perfil</span>
                         </button>
+                        <button type="button"
+                            class="btn x-nav-pill d-lg-none d-flex align-items-center gap-3 text-white rounded-pill px-3 py-2 border-0 text-start"
+                            data-bs-toggle="offcanvas" data-bs-target="#explorePanel"
+                            aria-controls="explorePanel" aria-label="Explorar" title="Explorar">
+                            <i class="bi bi-search fs-4"></i>
+                        </button>
                     </nav>
                     <button type="button"
                         class="btn btn-primary x-btn-post rounded-pill w-100 py-2 mt-3 fw-bold fs-6 shadow-sm"
@@ -49,6 +55,7 @@
                         <span class="d-none d-xl-inline">Postar</span>
                         <i class="bi bi-feather d-xl-none"></i>
                     </button>
+
                 </div>
 
                 <!-- Card do Usuário Logado no Rodapé da Sidebar -->
@@ -58,13 +65,13 @@
                         data-bs-toggle="dropdown">
                         <div class="d-flex align-items-center gap-2 overflow-hidden">
                             {% if user.avatar %}
-                                <img class="x-avatar-sm rounded-circle object-fit-cover flex-shrink-0"
-                                    src="{{ user.avatar.url }}" alt="Avatar de {{ user.username }}">
+                            <img class="x-avatar-sm rounded-circle object-fit-cover flex-shrink-0"
+                                src="{{ user.avatar.url }}" alt="Avatar de {{ user.username }}">
                             {% else %}
-                                <div
-                                    class="x-avatar-sm rounded-circle bg-primary d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0">
-                                    {{ user.display_name|slice:":1"|upper }}
-                                </div>
+                            <div
+                                class="x-avatar-sm rounded-circle bg-primary d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0">
+                                {{ user.display_name|slice:":1"|upper }}
+                            </div>
                             {% endif %}
 
                             <div class="text-start  d-xl-block text-truncate">
@@ -95,8 +102,15 @@
             </main>
 
             <!-- Coluna 3: Sidebar Direita (Busca e Quem Seguir) -->
-            <aside class="col-lg-4 col-xl-3 d-none d-lg-block px-4 py-2">
-                <div class="sticky-top pt-1">
+            <aside class="offcanvas-lg offcanvas-end col-lg-4 col-xl-3" tabindex="-1" id="explorePanel"
+                aria-labelledby="explorePanelTitle">
+
+                <div class="offcanvas-header d-lg-none">
+                    <h2 class="offcanvas-title" id="explorePanelTitle">Explorar</h2>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        data-bs-target="#explorePanel" aria-label="Fechar"></button>
+                </div>
+                <div class="offcanvas-body px-4 py-2 flex-column">
                     <!-- Barra de Busca -->
                     <div
                         class="input-group mb-3 x-search-box rounded-pill overflow-hidden border border-secondary border-opacity-25">
