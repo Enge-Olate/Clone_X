@@ -20,7 +20,7 @@ env = environ.Env(
     DEBUG = (bool, False),
     ALLOWED_HOSTS=(
         list,
-        ['localhost', '127.0.0.1','*']
+        ['localhost', '127.0.0.1', '0.0.0.0']
     ),
 )
 
